@@ -4,6 +4,12 @@ export class CurrencySystem {
     constructor(save) {
         this.save = save || new SaveManager();
         this.coins = this.save.get('coins', 0);
+        // First-time player: give starter coins for one free pull
+        if (this.coins === 0 && this.save.getCollection().length === 0 && !this.save.get('_gotStarterCoins')) {
+            this.coins = 10;
+            this.save.set('coins', 10);
+            this.save.set('_gotStarterCoins', true);
+        }
         this.listeners = [];
     }
 
