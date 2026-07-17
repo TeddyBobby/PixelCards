@@ -17,11 +17,39 @@ export class MainScene extends Phaser.Scene {
         this.input.once('pointerdown', () => { MusicManager.playMenuMusic(); });
         if (!MusicManager._playing) MusicManager.playMenuMusic();
 
-        const muteLabel = this.add.text(W - 15, 15, MusicManager.isMuted() ? '\ud83d\udd07' : '\ud83d\udd0a', {
-            fontSize: '16px',
-        }).setOrigin(1, 0).setInteractive({ useHandCursor: true }).on('pointerdown', () => {
+        // Pixel art speaker icon (12x12 grid, 2px per pixel)
+        const speakerGfx = this.add.graphics();
+        const sx = W - 28, sy = 12;
+        const drawSpeaker = (muted) => {
+            speakerGfx.clear();
+            if (muted) {
+                // Speaker body with X
+                speakerGfx.fillStyle(0x666688);
+                speakerGfx.fillRect(sx, sy+4, 4, 14); speakerGfx.fillRect(sx+4, sy+6, 2, 10);
+                speakerGfx.fillRect(sx+6, sy+8, 2, 6); speakerGfx.fillRect(sx+8, sy+10, 2, 2);
+                // X over it
+                speakerGfx.fillStyle(0xff4444);
+                speakerGfx.fillRect(sx+12, sy+6, 3, 3); speakerGfx.fillRect(sx+14, sy+4, 3, 3);
+                speakerGfx.fillRect(sx+14, sy+6, 3, 3); speakerGfx.fillRect(sx+12, sy+4, 3, 3);
+                speakerGfx.fillRect(sx+8, sy+14, 3, 3); speakerGfx.fillRect(sx+6, sy+14, 3, 3);
+            } else {
+                // Speaker body + sound waves
+                speakerGfx.fillStyle(0x88aacc);
+                speakerGfx.fillRect(sx, sy+4, 4, 14); speakerGfx.fillRect(sx+4, sy+6, 2, 10);
+                speakerGfx.fillRect(sx+6, sy+8, 2, 6); speakerGfx.fillRect(sx+8, sy+10, 2, 2);
+                // Sound waves
+                speakerGfx.fillStyle(0x88aacc, 0.5);
+                speakerGfx.fillRect(sx+12, sy+8, 2, 6);
+                speakerGfx.fillRect(sx+16, sy+6, 2, 10);
+                speakerGfx.fillStyle(0x88aacc, 0.2);
+                speakerGfx.fillRect(sx+20, sy+4, 2, 14);
+            }
+        };
+        drawSpeaker(MusicManager.isMuted());
+        const speakerZone = this.add.zone(W - 18, 22, 30, 30).setInteractive({ useHandCursor: true });
+        speakerZone.on('pointerdown', () => {
             const on = MusicManager.toggle();
-            muteLabel.setText(on ? '\ud83d\udd0a' : '\ud83d\udd07');
+            drawSpeaker(!on);
             if (on) MusicManager.playMenuMusic();
         });
 
