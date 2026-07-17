@@ -1,0 +1,20 @@
+{
+  "name": "pixel-cards",
+  "version": "2.0.0",
+  "description": "像素卡牌收集战斗游戏 — Pixel creature card collection & battle game",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "keywords": ["game", "pixel-art", "card-collection", "phaser", "gacha"],
+  "author": "TeddyBobby",
+  "license": "MIT",
+  "dependencies": {
+    "phaser": "^3.80.1"
+  },
+  "devDependencies": {
+    "vite": "^8.1.5"
+  }
+}
